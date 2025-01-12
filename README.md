@@ -15,5 +15,5 @@ npm create vite@latest
 -To install any modules-
   npm install
 
--To run
+-To run:
  npm run dev
