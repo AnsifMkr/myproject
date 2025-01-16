@@ -15,19 +15,27 @@ const Login = () => {
     // Retrieve registered users from localStorage (replace with actual API if needed)
     const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || {};
 
-    // Check if the login identifier (username or UID) matches any registered user for the specific role
-    const user = Object.values(registeredUsers).find((user) => 
-      (user.username === loginIdentifier || user.uid === loginIdentifier) && user.role === role
+    const user = Object.values(registeredUsers).find(
+      (user) =>
+        (String(user.username).trim() === String(loginIdentifier).trim() || 
+         String(user.uid).trim() === String(loginIdentifier).trim()) &&
+        String(user.role).trim() === String(role).trim()
     );
-
-    if (user && user.password === password) {
-      // Login successful
-      console.log('Login successful');
-      setError(''); // Clear any previous error
-      navigate(`/dashboard/${role}`);
+    
+    // console.log(loginIdentifier, role)
+    if (user) {
+      if (user.password === password) {
+        // Login successful
+        setError(''); // Clear any previous error
+        console.log('Login successful');
+        navigate(`/dashboard/${role}`);
+      } else {
+        // Incorrect password
+        setError('Invalid password');
+      }
     } else {
-      // Show error message if login fails
-      setError('Invalid username, UID, or password');
+      // No matching user found
+      setError('Invalid username, UID, or role');
     }
   };
 
